@@ -17,7 +17,7 @@ const burger = (props) => {
         return arr.concat(el) // transfor to one list
     } , [])
 
-    console.log( transformedIngredient)
+   // console.log( transformedIngredient)
 
     if(transformedIngredient.length ===0){
         transformedIngredient = <p>  please add ingredients </p> ;

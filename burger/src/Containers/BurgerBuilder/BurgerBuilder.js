@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Aux from '../../hoc/aux';
+import Aux from '../../hoc/Aux/aux';
 
 import Burger from '../../Components/Burger/Burger'
 
@@ -10,6 +10,9 @@ import Modal from '../../Components/UI/Modal/Modal'
 
 import OrderSammary   from '../../Components/Burger/OrderSammary/OrderSammary'
 
+import axios from '../../../src/axios-order' ;
+
+import Spinner from '../../Components/UI/Spinner/Spinner'
 
 const PRICE_INGREDEINT = {
             salad : 0.4 ,
@@ -31,7 +34,8 @@ class BurgerBuilder extends Component {
         },
         totalPrice : 4 ,
         purchasable:false,
-        purchasing:false 
+        purchasing:false ,
+        loadinag : false
     }
 
 
@@ -48,7 +52,31 @@ class BurgerBuilder extends Component {
 
 
     continuePuchaseHander=() => {
-      alert("contunue !!!")
+      //alert("contunue !!!")
+      this.setState({loadinag:true})
+      const order = {
+          ingredients : this.state.ingredients ,
+          price : this.state.totalPrice,
+          customer :{
+              name : 'maria',
+              adress :{
+                  street : 'testtest',
+                  zipCode : 'testtest',
+                  country : 'Tunisia'
+              },
+              email : "mdebawi@gmail.com"
+          },
+          deliveryMethod  : 'fastTest'
+
+      }
+
+      axios.post('/orders.json', order)
+      .then(Response => {
+          this.setState({loadinag:false , purchasing:false})
+
+      })
+      .catch(error => {  this.setState({loadinag:false , purchasing:false}) })
+
     }
 
 
@@ -129,6 +157,16 @@ class BurgerBuilder extends Component {
         }
 
 
+        let orderSammary =  
+            <OrderSammary ingredients= {this.state.ingredients}
+                    cancelPurchase={this.CloseModalHandler} continuePurchase={this.continuePuchaseHander}
+                    purchase = {this.state.totalPrice.toFixed(2)}
+            /> 
+
+        if(this.state.loadinag ){
+            orderSammary= <Spinner/>
+        }
+        
 
         return ( 
 
@@ -136,12 +174,7 @@ class BurgerBuilder extends Component {
              <Aux>
 
                 <Modal show={this.state.purchasing}  CloseModal= {this.CloseModalHandler} >
-                    <OrderSammary ingredients= {this.state.ingredients}
-
-                        cancelPurchase={this.CloseModalHandler} continuePurchase={this.continuePuchaseHander}
-                        purchase = {this.state.totalPrice.toFixed(2)}
-                    />
-
+                         {orderSammary}
                 </Modal>
 
                 <Burger ingredients= {this.state.ingredients} />

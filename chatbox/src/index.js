@@ -3,25 +3,31 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {BrowserRouter} from 'react-router-dom';
 
-import {Provider} from 'react-redux';
+import Connection from "./component/Connection" ;
 
-import  {createStore} from 'redux' ;
+import NotFound from "./component/NotFound" ;
 
-import reducer from './store/reducer' ;
 
-const store = createStore(reducer)
+import {BrowserRouter , Switch , Route} from 'react-router-dom'
+
+const Root = ()=> (
+  <React.StrictMode>
+    <BrowserRouter>
+        <Switch>
+          <Route exact path='/' component={Connection}/>
+          <Route  path='/pseudo/:pseudo' component={App}/>
+          <Route  component={NotFound}/>
+        </Switch>
+      </BrowserRouter>
+    </React.StrictMode>
+)
+
+
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-            <App />
-      </BrowserRouter>
-    </Provider>
-   
-  </React.StrictMode>,
+ <Root/>,
   document.getElementById('root')
 );
 

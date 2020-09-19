@@ -4,8 +4,9 @@ class Formulaire extends PureComponent {
   
     state = {
         message : '',
-        length:this.props.length
+        length:this.props.length,
     }
+
 
 
     submitHandler= event  => {
@@ -15,9 +16,10 @@ class Formulaire extends PureComponent {
 
     changeHandler= event =>{
       const msg = event.target.value;
-      const length = this.props.length - msg.length ;
-      this.setState({message:msg , length:length });
 
+        const length = this.props.length - msg.length ;
+        this.setState({message:msg , length:length });
+     
 
     }
 
@@ -25,17 +27,24 @@ class Formulaire extends PureComponent {
     createMessage=()=> {
 
         const{addMessage , pseudo ,length } = this.props ;
- 
+
+
+
         const message={
             pseudo,
             message : this.state.message,
             length: this.state.length
         }
 
+
+         
         addMessage(message)
 
         this.setState({message : '' , length:length})
-    }
+      }
+
+      
+    
 
     OnkeyUpHandler = event => {
        if(event.key === 'Enter'){
@@ -45,9 +54,11 @@ class Formulaire extends PureComponent {
 
 
 
+
     render() {
         return (
            <form className="form" onSubmit={this.submitHandler}>
+              
                <textarea  maxLength={this.props.length} required 
                 onChange={this.changeHandler}  onKeyUp={this.OnkeyUpHandler} value={this.state.message}  />  
 
